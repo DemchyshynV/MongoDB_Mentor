@@ -1,0 +1,103 @@
+db.users.insertMany([
+    {
+        name: 'Alex', age: 25, gender: 'male', address: {
+            city: 'Lviv',
+            street: 'Chornovola',
+            house: 25,
+            flat: 12
+        },
+        parents: [
+            'Vasia',
+            'Masha',
+        ],
+        rating: 5,
+        studying: ['js','java']
+    },
+    {
+        name: 'Natalii', age: 29, gender: 'female', address: {
+            city: 'Lviv',
+            street: 'Marko Vovchok',
+            house: 45,
+            flat: 45
+        },
+        parents: [
+            'Igor',
+            'Nina',
+        ],
+        rating: 4,
+        studying: ['python','java', 'css']
+    },
+    {
+        name: 'Alexsandr', age: 34, gender: 'male', address: {
+            city: 'Lviv',
+            street: 'Kitayska',
+            house: 10,
+            flat: 5
+        },
+        parents: [
+            'Petro',
+            'Alina',
+        ],
+        rating: 2,
+        studying: ['js','java','html']
+    },
+    {
+        name: 'Sergii', age: 12, gender: 'male',
+        parents: [
+            'Anton',
+            'Tamara',
+        ],
+        rating: 4,
+        studying: ['node','java', 'css','mongo','mysql']
+    },
+    {
+        name: 'Igor', age: 45, gender: 'male', address: {
+            city: 'Kyiv',
+            street: 'Shevchenko',
+            house: 100,
+            flat: 66
+        },
+        parents: [
+            'Igor',
+            'Igor',
+        ],
+        rating: 5,
+        studying: ['java','node']
+    },
+    {
+        name: 'Eva', age: 26, gender: 'female', address: {
+            city: 'Odessa',
+            street: 'Derebasovska',
+            house: 4,
+        },
+        parents: [
+            'Masha'
+        ],
+        rating: 2,
+        studying: ['js']
+    },
+    {
+        name: 'Kira', age: 49, gender: 'female', address: {
+            city: 'Uzgorod',
+            street: 'Doroshenka',
+            house: 201,
+            flat: 1
+        },
+        parents: [
+            'Vitaliy',
+            'Olha',
+        ],
+        rating: 2,
+        studying: ['java']
+    },
+    {
+        name: 'Vova', age: 16, gender: 'male', address: {
+            city: 'Uzgorod',
+            street: 'Bethoven',
+            house: 2,
+            flat: 145
+        },
+        rating: 3
+    }
+
+])

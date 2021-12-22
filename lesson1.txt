@@ -1,0 +1,111 @@
+db.getCollection('users').find({})
+
+ db.getCollection('users').insert({car:'BMW', model:'s3'})
+ db.getCollection('users').find({gender:'female'})
+ db.getCollection('users').find({_id:ObjectId('61c349812af8d3c1b80e3852')})
+ db.getCollection('users').find({gender:'female', rating:2})
+
+db.getCollection('users').find(
+	{gender:'female', rating:2},
+	{_id:0, name:1, age:true}
+)
+
+db.getCollection('users').find(
+{
+    $or:[
+        {rating:2},
+        {rating:5},
+        {age:12}
+    ]
+}
+)
+
+db.getCollection('users').find(
+{
+    $and:[
+        {rating:2},
+        {rating:5},
+        {age:12}
+    ]
+}
+)
+
+
+
+db.getCollection('users').find({age:{$in:[25,12,26]}})
+db.getCollection('users').find({age:{$nin:[25,12,26]}})
+db.getCollection('users').find({
+    age:{
+        $not:{
+            $in:[25,26]
+        }
+    }
+})
+
+
+db.getCollection('users').find({name:/^a/})
+db.getCollection('users').find({name:/a$/i})
+db.getCollection('users').find({name:/^a/i})
+db.getCollection('users').find({name:/^.{2}t/i})
+db.getCollection('users').find({name:/^k.*a$/i})
+db.getCollection('users').find({name:/.*v.*/i})
+
+
+db.getCollection('users').find().sort({rating:1})
+db.getCollection('users').find().sort({rating:-1})
+db.getCollection('users').find().sort({rating:1, age:-1})
+
+db.getCollection('users').find().sort({rating:1, age:-1}).limit(2)
+db.getCollection('users').find().sort({rating:1, age:-1}).limit(2).skip(2)
+
+db.getCollection('users').find({rating:{$gt:2}}) // >
+db.getCollection('users').find({rating:{$gte:2}}) // >=
+db.getCollection('users').find({rating:{$lt:2}}) // <
+db.getCollection('users').find({rating:{$lte:2}}) // <=
+db.getCollection('users').find({rating:{$ne:2}}) // !=
+db.getCollection('users').find({rating:{$eq:2}}) // ==
+
+
+db.getCollection('users').update(
+    {gender:'male'},
+    {$set:{gender:'animal'}}
+)
+
+db.getCollection('users').updateMany(
+    {gender:'male'},
+    {$set:{gender:'animal'}}
+)
+
+
+
+db.getCollection('users').find({parents:{$size:2}}) // только цифра
+db.getCollection('users').find({parents:{$exists:0}})
+
+db.getCollection('users').updateMany(
+    {parents:{$exists:1}},
+    {$set:{'parents.$[]':'Не знаю'}}  // .$[] обращение ко всем елементам массива
+)
+
+
+db.getCollection('users').updateMany(
+    {_id:ObjectId("61c357e82af8d3c1b80e385f")},
+    {$set:{parents:[{father:{name:'Kiril', age:88}},{father:{name:'Leha', age:56}},{mother:{name:'Anna', age:75}}]}}
+)
+
+db.getCollection('users').find({parents:'Masha'})
+db.getCollection('users').find({'parents.father.name':'Kiril'})
+db.getCollection('users').find({'address.city':'Kyiv'})
+db.getCollection('users').find({parents:'Olha'})
+db.getCollection('users').find({'parents.1.father.age':56})
+
+
+db.getCollection('users').update(
+    {_id:ObjectId("61c361332af8d3c1b80e3861")},
+    {$push:{parents:'Lalay'}}
+)
+db.getCollection('users').update(
+    {_id:ObjectId("61c37a93325db951d86a8897")},
+    {$pull:{parents:'Tamara'}}
+)
+
+db.getCollection('users').remove({parents:'Masha'})
