@@ -5,32 +5,32 @@ db.students.findOne({'lessons.0':'english'}).name
 db.students.find({},{lessons:{$slice:5}})
 db.students.find({lessons:{$size:2}})
 
-db.students.updateOne(
+db.students.updateOne( // add to array
     {_id:ObjectId('624730ce57f35871ee1bf776')},
     {$push:{lessons:'python'}}
     )
 
-db.students.updateOne(
+db.students.updateOne( // add each to array
     {_id:ObjectId('624730ce57f35871ee1bf776')},
     {$push:{lessons:{$each:['js', 'pascal']}}}
     )
 
-db.students.updateOne(
+db.students.updateOne( //delete by item
     {_id:ObjectId('624730ce57f35871ee1bf776')},
     {$pull:{lessons:["python", "java"]}}
     )
 
 
-db.students.updateOne(
+db.students.updateOne( //delete last
     {_id:ObjectId('624730ce57f35871ee1bf776')},
     {$pop: {lessons: 1}}
     )
-db.students.updateOne(
+db.students.updateOne( //delete first
     {_id:ObjectId('624730ce57f35871ee1bf776')},
     {$pop: {lessons: -1}}
     )
 
-db.students.updateOne(
+db.students.updateOne( 
     {_id:ObjectId('624730ce57f35871ee1bf776')},
     {$addToSet:{lessons:'java'}}
     )
