@@ -20,6 +20,15 @@ db.students.updateOne( //delete by item
     {$pull:{lessons:["python", "java"]}}
     )
 
+db.students.updateOne( // delete field
+    {_id: ObjectId('62ac8eeca4cb7b6e0b744283')},
+    {$unset: {'lessons.0': 1}}
+    )
+db.students.updateOne( // delete null from array
+    {_id: ObjectId('62ac8eeca4cb7b6e0b744283')},
+    {$pull: {'lessons': null}}
+    )
+
 
 db.students.updateOne( //delete last
     {_id:ObjectId('624730ce57f35871ee1bf776')},
