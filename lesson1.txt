@@ -1,0 +1,97 @@
+db.users.find()
+db.users.insertOne({cars: 'BMW', model: 's3'})
+db.users.find({gender: 'female', age: 29})
+
+db.users.find({
+    $or: [
+        {rating: 2},
+        {rating: 5},
+        {age: 12}
+    ]
+})
+
+db.users.find({
+    $and: [
+        {rating: 5},
+        {age: 25}
+    ]
+})
+
+db.users.find({age: {$in: [25, 12, 26]}})
+db.users.find({age: {$nin: [25, 12, 26]}})
+db.users.find({
+    age: {
+        $not: {
+            $in: [25, 12, 26]
+        }
+    }
+})
+
+db.users.find({name: /^a/i})
+db.users.find({name: /a$/i})
+db.users.find({name: /^.{2}t/i})
+db.users.find({name: /^k.*a$/i})
+db.users.find({name: /.*v.*/i})
+db.users.find({name: /.*o.{2}$/i})
+
+db.users.find().sort({rating: -1, age: 1})
+
+db.users.find({age: true})
+
+
+db.users.find().sort({rating: -1, age: 1}).limit(2).skip(4)
+
+db.users.find({rating: {$gt: 2}})
+db.users.find({rating: {$gte: 2}})
+db.users.find({rating: {$lt: 2}})
+db.users.find({rating: {$lte: 2}})
+db.users.find({rating: {$ne: 2}})
+db.users.find({rating: {$eq: 2}})
+db.users.find({rating: 2})
+
+db.users.updateOne(
+    {_id: ObjectId("63b31609bda8c9305bdd2c9a")},
+    {$set: {rating: 8}}
+    )
+db.users.find({_id: ObjectId("63b31609bda8c9305bdd2c9a")})
+
+db.users.updateMany(
+    {gender: 'male'},
+    {$set: {gender: 'animal'}}
+    )
+db.users.find({}, {age: 1, gender: 1, _id: 0})
+
+db.users.find()
+
+db.users.find({'address.house': 45})
+db.users.find({studying: 'java'})
+
+db.users.find({studying: {$size: 3}})
+db.users.find({parents: {$exists: 0}})
+db.users.find({parents: null})
+
+db.users.updateMany(
+    {parents: {$exists: 1}},
+    {$set: {'parents.$[]': 'Kokos'}}
+    )
+
+db.users.updateOne({_id: ObjectId("63b31d25bda8c9305bdd2cb5")},
+    {$push: {studing: 'java'}}
+    )
+
+db.users.updateOne({_id: ObjectId("63b31d25bda8c9305bdd2cb5")},
+    {$pull: {studing: 'js'}}
+    )
+
+db.users.find({_id: ObjectId("63b31d20bda8c9305bdd2ca6")})
+
+db.users.deleteOne({_id: ObjectId("63b31d25bda8c9305bdd2cb5")})
+
+db.users.find({name: /^.{4}$/})
+
+///////////////////////////////////////////////////////////////////////////////
+// хтось питав як видалити поле
+db.users.updateOne(
+    {_id: ObjectId("63b31d20bda8c9305bdd2ca6")},
+    {$unset: {rating: 1}}
+    )
