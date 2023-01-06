@@ -1,0 +1,143 @@
+db.students.find()
+
+db.students.find({lessons: 'mathematics'})
+db.students.find({lessons: {$all: ['english', 'mathematics']}})
+db.students.find({'lessons.1': 'mathematics'})
+db.students.find({}, {lessons: {$slice: 2}})
+db.students.find({lessons: {$size: 2}})
+db.students.findOne({'lessons.1': 'mathematics'}).name
+
+
+db.students.find({_id: ObjectId('63b85865a4da1253a4657e16')})
+db.students.updateOne(
+    {_id: ObjectId('63b85865a4da1253a4657e16')},
+    {$push: {lessons: 'js'}}
+    )
+
+// db.students.updateOne(
+//     {_id:ObjectId('63b85865a4da1253a4657e16')},
+//     {$push:{lessons:['python', 'java']}}
+//     )
+
+db.students.updateOne(
+    {_id: ObjectId('63b85865a4da1253a4657e16')},
+    {$push: {lessons: {$each: ['python', 'java']}}}
+    )
+
+db.students.updateOne(
+    {_id: ObjectId('63b85865a4da1253a4657e16')},
+    {$pop: {lessons: 1}}
+    )
+
+db.students.updateOne(
+    {_id: ObjectId('63b85865a4da1253a4657e16')},
+    {$pull: {lessons: 'mathematics'}}
+    )
+
+db.students.updateOne(
+    {_id: ObjectId('63b85865a4da1253a4657e16')},
+    {$unset: {'lessons.1': 1}}
+    )
+
+db.students.updateOne(
+    {_id: ObjectId('63b85865a4da1253a4657e16')},
+    {$unset: {'lessons':1}}
+    )
+
+db.students.updateOne(
+    {_id: ObjectId('63b85865a4da1253a4657e16')},
+    {$pull: {lessons: null}}
+    )
+
+db.students.updateOne(
+    {_id: ObjectId('63b85865a4da1253a4657e16')},
+    {$addToSet: {lessons: 'mysql'}}
+    )
+db.students.find({_id: ObjectId('63b85865a4da1253a4657e16')})
+db.students.find()
+db.students.updateMany(
+    {parents: {$exists: 1}, 'parents.profession': null},
+    {$set: {'parents.$[item].profession': 'waiter'}},
+    {'arrayFilters': [{'item.profession': null}]}
+    )
+
+
+db.students.updateMany(
+    {'parents': {$exists: 1}},
+    {$set: {"parents.$[elem].profession": 'waiter'}},
+    {arrayFilters: [{"elem.profession": {$exists: 0}}]})
+// db.students.find({lessons:{$size:{$gte:3}}})
+
+// db.students.aggregate([
+//     {
+//         $addFields:{
+//             lessonsCount:{$size:'$lessons'}
+//         }
+//     }
+// ])
+
+db.students.aggregate([
+    {
+        $addFields:{
+            lessonsCount:{$cond:{if:{$isArray:'$lessons'}, then:{$size:'$lessons'}, else:0}},
+
+        }
+    },
+    {
+        $addFields:{
+            sumClassAndLessonsCount:{$add:['$lessonsCount', '$class']}
+        }
+    },
+    {
+        $match:{
+            lessonsCount:{$gte:3}
+        }
+    }
+])
+
+
+db.students.aggregate([
+    {
+        $addFields:{
+            lessonsCount:{$cond:{if:{$isArray:'$lessons'}, then:{$size:'$lessons'}, else:0}},
+
+        }
+    },
+    {
+        $match:{
+            lessonsCount:{$gte:3}
+        }
+    },
+    {
+        $project:{
+            lessonsCount:0
+        }
+    }
+])
+
+db.students.aggregate([
+    {
+        $group:{
+            _id:'$class',
+            avgByClass:{$avg:'$avgScore'}
+        }
+    },
+    {$sort:{avgByClass:-1}},
+    {$limit:1},
+    {
+        $project:{
+            class:'$_id',
+            _id:0,
+            avgByClass:1
+        }
+    },
+    // {
+    //     $project:{
+    //         'document':"$$ROOT",
+    //
+    //     }
+    // },
+    // {
+    //     '$replaceRoot':{'newRoot':'$document'}
+    // }
+])
