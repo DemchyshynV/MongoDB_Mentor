@@ -1,0 +1,140 @@
+db.students.find()
+db.teacher.find()
+
+db.teacher.aggregate([
+  {
+    $group: {
+      _id: '$lesson'
+    }
+  }
+])
+
+db.teacher.aggregate([
+  {
+    $group: {
+      _id: '$lesson',
+      countOfLessons: { $sum: 1 },
+      min: { $min: '$payment' },
+      max: { $max: '$payment' },
+      avg: { $avg: '$payment' },
+      sumZPByLesson: { $sum: '$payment' }
+    }
+  }
+])
+
+db.teacher.aggregate([
+  {
+    $group: {
+      _id: '$lesson',
+      countOfLessons: { $sum: 1 },
+    }
+  },
+  {
+    $sort: {
+      countOfLessons: -1
+    }
+  },
+  {
+    $project: {
+      lesson: '$_id',
+      countOfLessons: 1,
+      _id: 0
+    }
+  }
+])
+
+db.teacher.aggregate([
+  {
+    $lookup: {
+      from: 'students',
+      localField: 'class_curator',
+      foreignField: 'class',
+      as: 'myStudents'
+    }
+  }
+])
+
+db.teacher.aggregate([
+  {
+    $match: {
+      class_curator: { $gte: 5 }
+    }
+  },
+  {
+    $lookup: {
+      from: 'students',
+      localField: 'class_curator',
+      foreignField: 'class',
+      as: 'myStudents'
+    }
+  },
+  {
+    $sort:{
+      class_curator:1
+    }
+  },
+  {
+    $skip:2
+  },
+  {
+    $limit:2
+  }
+])
+
+db.teacher.aggregate([
+  // {
+  //   $match: {
+  //     class_curator: { $gte: 5 }
+  //   }
+  // },
+  {
+    $lookup: {
+      from: 'students',
+      localField: 'class_curator',
+      foreignField: 'class',
+      as: 'myStudents'
+    }
+  },
+  {
+    $sort:{
+      class_curator:1
+    }
+  },
+  // {
+  //   $match:{
+  //     'myStudents.parents.name':'Ira'
+  //   }
+  // }
+  {
+    $match:{
+      'myStudents.parents.profession':'doctor'
+    }
+  }
+])
+
+
+
+db.teacher.aggregate([
+  {
+    $lookup: {
+      from: 'students',
+      localField: 'class_curator',
+      foreignField: 'class',
+      as: 'myStudents'
+    }
+  },
+  {
+    $unwind:'$myStudents'
+  },
+  {
+    $unwind: '$myStudents.parents'
+  },
+  {
+  $match:{
+    'myStudents.parents.profession':'doctor'
+  }
+  },
+  {
+    $count:'DoctorCount'
+  }
+])
