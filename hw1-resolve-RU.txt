@@ -1,0 +1,60 @@
+1) Найти всех юзеров у которых возраст меньше чем 20
+db.getCollection('users').find({age:{$lt:20}})
+
+2) Найти всех юзеров у которых хотя бы один из родителей Tamara или Petro
+db.getCollection('users').find(
+    {
+        $or:[
+            {parents:'Tamara'},
+            {parents:'Petro'}
+        ]
+    }
+)
+
+3) Найти всех юзеров которые изучают js
+db.getCollection('users').find(
+    {
+       studying:'js'
+    }
+)
+
+4) Найти всех юзеров которые изучают только один предмет и добавить им java
+db.getCollection('users').updateMany(
+    {
+       studying:{$size:1}
+    },
+    {$push:{studying:'java'}}
+)
+
+5) Найти всех юзеров номер домов которых находятся в диапазоне 1-20
+db.getCollection('users').find(
+    {
+        $and:[
+            {'address.house':{$gte:1}},
+            {'address.house':{$lte:20}}
+        ]
+    }
+)
+
+6) Найти всех юзеров у которых в названии улицы есть хоть один пробел
+db.getCollection('users').find(
+    {
+//         'address.street':/.* .*/
+        'address.street':/.*\s.*/
+    }
+)
+
+7) Удалить всех юзеров у которых нет поля studying
+db.getCollection('users').deleteMany({studying:null})
+
+8) Найти всех юзеров у которых имя одного из родителей заканчивается на 'na'
+db.getCollection('users').find({'parents':/na$/})
+
+9) Всем юзерам которые не изучают python добавить его в массив
+db.getCollection('users').updateMany(
+    {studying:{$ne:'python'}},
+    {$push:{studying:'python'}}
+)
+
+10) По сортировать юзеров по рейтингу и по номеру квартиры (и то и то от меньшего к большему)
+db.getCollection('users').find().sort({rating:-1, 'address.flat':-1})
