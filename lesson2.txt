@@ -160,3 +160,26 @@ db.teacher.aggregate([
 ])
 
 
+
+
+db.users.aggregate([
+    {
+        $addFields:{
+            nameLength:{$strLenCP:'$name'}
+        }
+    },
+    {
+        $match:{
+            nameLength:{$eq:4}
+        }
+    },
+    {
+        $project:{
+            nameLength:0
+        }
+    },
+])
+
+
+db.users.find({name:{$exists:1}, $expr:{$eq:[{$strLenCP:'$name'}, 4]}})
+
