@@ -1,0 +1,79 @@
+db.students.find()
+db.students.find({lessons:'mathematics'})
+db.students.find({'lessons.0':'english'})
+db.students.find({}, {lessons:{$slice:2}})
+db.students.find({lessons:{$size:2}})
+
+db.students.updateOne(
+    {_id:ObjectId('6529700ef69e3d3dd4a3c2cf')},
+    {$push:{lessons:'python'}}
+    )
+
+
+// Wrong
+// db.students.updateOne(
+//     {_id:ObjectId('6529700ef69e3d3dd4a3c2cf')},
+//     {$push:{lessons:['java', 'js']}}
+//     )
+
+db.students.updateOne(
+    {_id:ObjectId('6529700ef69e3d3dd4a3c2cf')},
+    {$push:{lessons:{$each:['a','b','c']}}}
+    )
+
+db.students.updateOne(
+    {_id:ObjectId('6529700ef69e3d3dd4a3c2cf')},
+    {$pull:{lessons:'a'}}
+    )
+
+
+db.students.updateOne(
+    {_id:ObjectId('6529700ef69e3d3dd4a3c2cf')},
+    {$unset:{'lessons.1':1}}
+    )
+
+db.students.updateOne(
+    {_id:ObjectId('6529700ef69e3d3dd4a3c2cf')},
+    {$pull:{lessons:null}}
+    )
+
+db.students.updateOne(
+    {_id:ObjectId('6529700ef69e3d3dd4a3c2cf')},
+    {$pop:{lessons:-1}}
+    )
+
+db.students.updateOne(
+    {_id:ObjectId('6529700ef69e3d3dd4a3c2cf')},
+    {$pop:{lessons:1}}
+    )
+
+db.students.updateOne(
+    {_id:ObjectId('6529700ef69e3d3dd4a3c2cf')},
+    {$addToSet:{lessons:'python'}}
+    )
+
+db.students.updateMany(
+    {parents:{$exists:1}, 'parents.profession':null},
+    {$set:{'parents.$[item].profession':'porn star'}},
+    {arrayFilters:[{'item.profession':null}]}
+    )
+
+
+db.students.aggregate([
+    {
+        $addFields:{
+            lessonsLength:{$cond:{if:{$isArray:'$lessons'}, then:{$size:'$lessons'}, else:0}}
+        }
+    },
+
+    {
+        $match:{
+            lessonsLength:{$lt:3}
+        }
+    },
+    {
+        $project:{
+            lessonsLength:0
+        }
+    }
+])
