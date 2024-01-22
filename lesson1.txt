@@ -1,0 +1,107 @@
+db.users.find()
+
+db.users.insertOne({car: 'BMW', model: 's3', year: 2020})
+db.users.insertMany([
+    {car: 'BMW', model: 's3', year: 2020},
+    {car: 'BMW', model: 's3', year: 2020}
+]
+    )
+
+db.users.find({_id: ObjectId('65aea9a1b031d02f1b5c7a38')})
+
+db.users.find({gender: 'female', rating: 2})
+
+db.users.find(
+    {gender: 'female', rating: 2},
+    {age: true, _id: 0}
+    )
+
+db.users.find({
+    $or: [
+        {rating: 2, age: 5},
+        {rating: 5},
+        {age: 12}
+    ]
+})
+
+db.users.find({
+    $and: [
+        {age: 12},
+        {gender: 'male'},
+        {rating: 2}
+    ]
+})
+
+db.users.find({age: {$in: [25, 36, 20, 45]}})
+db.users.find({age: {$nin: [25, 36, 20, 45]}})
+db.users.find({
+    age: {
+        $not: {
+            $in: [[25, 36, 20, 45]]
+        }
+    }
+})
+
+db.users.find({rating: {$gt: 2}}) // >
+db.users.find({rating: {$lt: 3}}) // <
+db.users.find({rating: {$gte: 3}}) // >=
+db.users.find({rating: {$lte: 3}}) // <=
+db.users.find({rating: {$ne: 3}}) // !=
+db.users.find({rating: {$eq: 3}}) // ==
+db.users.find({rating: 3}) // ==
+
+db.users.find({name: 'Kira'})
+db.users.find({name: /^a/i})
+db.users.find({name: /A$/i})
+db.users.find({name: /.{2}t/i})
+db.users.find({name: /^k.*a$/i})
+db.users.find({name: /.*v.*/i})
+
+db.users.find().sort({rating: 1})
+db.users.find().sort({rating: -1})
+db.users.find().sort({rating: -1, name: 1})
+db.users.find().sort({rating: -1, name: 1}).limit(2)
+db.users.find().sort({rating: -1, name: 1}).limit(2).skip(6)
+
+
+db.users.updateOne(
+    {_id: ObjectId('65aea9a1b031d02f1b5c7a38')},
+    {$set:{rating: 8}}
+    )
+
+db.users.find()
+
+db.users.updateMany(
+    {gender: 'male'},
+    {$set: {gender: 'animal'}}
+    )
+
+db.users.find({"address.house": 25})
+db.users.find({studying: 'java'})
+
+
+db.users.find({parents: {$exists: 1}})
+db.users.find({parents: {$exists: 0}})
+
+db.users.find({parents: null})
+
+db.users.find({'studying.1': 'java'})
+
+db.users.updateMany(
+    {parents: {$exists: 1}},
+    {$set: {'parents.$[]': null}}
+    )
+
+db.users.updateOne(
+    {_id: ObjectId('65aea9a1b031d02f1b5c7a38')},
+    {$push: {studying: 'python'}}
+
+)
+
+db.users.updateOne(
+    {_id: ObjectId('65aea9a1b031d02f1b5c7a38')},
+    {$pull: {studying: 'css'}}
+
+    )
+
+db.users.deleteOne({_id:ObjectId('65aeab02b031d02f1b5c7a40')})
