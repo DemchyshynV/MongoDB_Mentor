@@ -1,0 +1,176 @@
+db.teacher.find();
+db.students.find();
+
+db.teacher.aggregate([
+    {
+        $group:{
+            _id:'$lesson'
+        }
+    }
+])
+
+db.teacher.aggregate([
+    {
+        $group:{
+            _id:'$lesson',
+            minPayment:{$min:'$payment'},
+            maxPayment:{$max:'$payment'},
+            avg:{$avg:'$payment'},
+            countOfLessons:{$sum:1},
+            sum:{$sum:'$payment'}
+        }
+    }
+])
+
+db.teacher.aggregate([
+    {
+        $group:{
+            _id:'$lesson',
+            countM:{
+                $sum:1
+            }
+        }
+    },
+    {
+        $sort:{
+            // _id:-1
+            countM:-1
+        }
+    },
+    {
+        $project:{
+            _id:false,
+            myLesson:'$_id',
+            countM:1
+        }
+    }
+    // {
+    //     $project:{
+    //         lesson:'$_id',
+    //         _id:0,
+    //         count:1
+    //     }
+    // }
+])
+
+
+db.teacher.aggregate([
+    {
+        $match:{
+            class_curator:{$gte:4}
+        }
+    },
+    {
+        $lookup:{
+            from:'students',
+            localField:'class_curator',
+            foreignField:'class',
+            as:'myStudents'
+        }
+    },
+    {
+        $match:{
+            'myStudents.parents.name':'Andriy'
+        }
+    }
+
+])
+
+
+db.teacher.aggregate([
+    {
+        $lookup:{
+            from:'students',
+            localField:'class_curator',
+            foreignField:'class',
+            as:'myStudents'
+        }
+    }
+    ])
+
+
+db.teacher.aggregate([
+    {
+        $match:{
+            class_curator:{$gte:4}
+        }
+    },
+    {
+        $skip:2
+    },
+    {
+        $limit:2
+    },
+
+])
+
+
+db.teacher.aggregate([
+    {
+        $lookup:{
+            from:'students',
+            localField:'class_curator',
+            foreignField:'class',
+            as:'myStudents'
+        }
+    },
+    {
+        $unwind:'$myStudents'
+    },
+    {
+        $unwind:'$myStudents.parents'
+    },
+    {
+      $match:{
+          'myStudents.parents.profession':'doctor'
+      }
+    },
+    {
+        $count:'doctors'
+    }
+])
+
+db.students.find()
+db.students.aggregate([
+    {
+        $addFields:{
+            nameLength:{$strLenCP:'$name'}
+        }
+    },
+    {
+        $match:{
+            nameLength:4
+        }
+    },
+    {
+        $project:{
+            nameLength:0
+        }
+    }
+])
+
+db.students.find({name:{$exists:1}, $expr:{$eq:[{$strLenCP:'$name'}, 4]}})
+
+db.students.find({lessons:{$size:3}})
+
+db.students.find()
+db.students.aggregate([
+    {
+        $unwind:'$parents'
+    },
+    {
+        $addFields:{
+            len:{$strLenCP:'$parents.name'}
+        }
+    },
+    {
+        $match:{
+            'parents.gender':'male',
+            'len':4
+        }
+    },
+])
+
+    {
+        'name.pasf':2222
+    }
