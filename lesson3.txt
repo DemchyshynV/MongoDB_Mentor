@@ -1,0 +1,50 @@
+db.students.find({}, {lessons:{$slice:1
+}})
+
+db.students.find({_id:ObjectId('65b14a2a2bae74129f07ba25')})
+
+db.students.updateOne(
+    {_id:ObjectId('65b14a2a2bae74129f07ba25')},
+    {$push:{lessons:'python'}}
+    )
+
+db.students.updateOne(
+    {_id:ObjectId('65b14a2a2bae74129f07ba25')},
+    {$push:{lessons:{$each:['asd','asdasd']}}}
+    )
+
+db.students.updateOne(
+    {_id:ObjectId('65b14a2a2bae74129f07ba25')},
+    {$pull:{lessons:'asd'}}
+    )
+
+db.students.updateOne(
+    {_id:ObjectId('65b14a2a2bae74129f07ba25')},
+    {$unset:{'lessons.2':1}}
+    )
+
+db.students.updateOne(
+    {_id:ObjectId('65b14a2a2bae74129f07ba25')},
+    {$pull:{lessons:null}}
+    )
+
+db.students.updateOne(
+    {_id:ObjectId('65b14a2a2bae74129f07ba25')},
+    {$pop:{lessons:1}}
+    )
+
+db.students.updateOne(
+    {_id:ObjectId('65b14a2a2bae74129f07ba25')},
+    {$pop:{lessons:-1}}
+    )
+
+db.students.updateOne(
+    {_id:ObjectId('65b14a2a2bae74129f07ba25')},
+    {$addToSet:{lessons:'java'}}
+    )
+
+db.students.updateOne(
+    {_id:ObjectId('65b14a2a2bae74129f07ba25')},
+    {$unset:{'parents.0.name':1}}
+    )
+
