@@ -1,0 +1,95 @@
+use mar-2024
+
+db.users.insertOne({name:"max", age:15})
+
+db.users.find()
+
+db.users.insertOne({carModel:"BMW", year:2000})
+
+db.users.find({_id:ObjectId('66707ce8eced993066a6a7ee')})
+
+db.users.find(
+    {gender:'female', rating:2},
+    {_id:1, age:1, name:1}
+)
+
+db.users.find( {gender:'female', rating:2})
+
+db.users.find({
+    $and:[
+        {rating:2},
+        {gender:'female'}
+    ]
+})
+
+db.users.find({
+    $or:[
+        {rating:2},
+        {gender:'female'}
+    ]
+})
+
+db.users.find({age:{$in:[12, 15,20,25,30,18,16]}})
+db.users.find({age:{$nin:[12, 15,20,25,30,18,16]}})
+
+db.users.find({
+    age:{
+        $not:{
+            $in:[12, 15,20,25,30,18,16]
+        }
+    }
+})
+
+db.users.find({rating:{$gt:2}})
+db.users.find({rating:{$lt:3}})
+db.users.find({rating:{$gte:3}})
+db.users.find({rating:{$lte:3}})
+db.users.find({rating:{$ne:3}})
+db.users.find({rating:{$eq:3}})
+
+db.users.find({name:'Kira'})
+db.users.find({name:/^a/i})
+db.users.find({name:/a$/i})
+db.users.find({name:/.{2}t/i})
+db.users.find({name:/^k.*a$/i})
+db.users.find({name:/v/i})
+
+db.users.find().sort({rating:1})
+db.users.find().sort({rating:-1})
+db.users.find().sort({rating:-1, name:-1}).limit(2)
+db.users.find().sort({rating:-1, name:-1}).limit(2).skip(8)
+
+db.users.find()
+
+db.users.updateOne(
+    {_id:ObjectId('66707c1ceced993066a6a7e4')},
+    {$set:{asdf:'asfd'}}
+)
+
+db.users.updateOne(
+    {_id:ObjectId('66707c1ceced993066a6a7e4')},
+    {$unset: {asdf:1}}
+)
+
+db.users.updateMany(
+    {gender:'male'},
+    {$set:{gender:'animal'}}
+)
+
+db.users.find({'address.house':{$gt:25}})
+db.users.find({parents:'Vitaliy'})
+db.users.find({parents:{$size:1}})
+db.users.find({parents:{$exists:1}})
+db.users.updateOne(
+    {_id:ObjectId('66707c1ceced993066a6a7e4')},
+    {$push:{studying:'python'}}
+)
+
+db.users.insertMany([
+    {asd:'dddd'},
+    {asd2:'2'}
+])
+
+db.users.deleteOne({_id:ObjectId(`66707ce8eced993066a6a7ee`)})
+db.users.deleteOne({_id:ObjectId('6670844deced993066a6a7f0')})
+db.users.deleteOne({_id:ObjectId('6670844deced993066a6a7f1')})
