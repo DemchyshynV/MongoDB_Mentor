@@ -1,0 +1,69 @@
+db.students.find()
+
+db.students.find({lessons:'english'})
+db.students.find({lessons:{$all:['german', 'physics']}})
+db.students.find({'lessons.1':'mathematics'})
+db.students.findOne({'lessons.1':'mathematics'}).name
+
+db.students.find({},{lessons:{$slice:1}})
+db.students.find({lessons:{$size:2}})
+
+db.students.updateOne(
+    {_id:ObjectId('66731d2b1d06fb3e95def607')},
+    {$push:{lessons:'python'}}
+)
+
+db.students.updateOne(
+    {_id:ObjectId('66731d2b1d06fb3e95def607')},
+    {$push:{lessons:['js', 'java']}}
+)
+
+db.students.updateOne(
+    {_id:ObjectId('66731d2b1d06fb3e95def607')},
+    {$push:{lessons:{$each:['js', 'java']}}}
+)
+
+db.students.updateOne(
+    {_id:ObjectId('66731d2b1d06fb3e95def607')},
+    {$pull:{lessons:['js', 'java']}}
+)
+
+db.students.updateOne(
+    {_id:ObjectId('66731d2b1d06fb3e95def607')},
+    {$pull:{lessons:'js'}}
+)
+
+db.students.find()
+
+db.students.updateOne(
+    {_id:ObjectId('66731d2b1d06fb3e95def607')},
+    {$unset:{'lessons.3':null}}
+)
+
+db.students.updateOne(
+    {_id:ObjectId('66731d2b1d06fb3e95def607')},
+    {$pull:{lessons:null}}
+)
+
+db.students.updateOne(
+    {_id:ObjectId('66731d2b1d06fb3e95def607')},
+    {$pop:{lessons:-1}}
+)
+
+db.students.updateOne(
+    {_id:ObjectId('66731d2b1d06fb3e95def607')},
+    {$addToSet:{lessons:{$each:['js', 'java', 'python', 'css']}}}
+)
+
+db.students.updateOne(
+    {_id:ObjectId('66731d2b1d06fb3e95def607')},
+    {$set:{lessons:['asd', 'html']}}
+)
+
+db.students.find()
+
+db.students.updateMany(
+    {parents:{$exists:1}, 'parents.profession':null},
+    {$set:{'parents.$[item].profession':'doctor'}},
+    {'arrayFilters':[{'item.profession':null}]}
+)
