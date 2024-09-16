@@ -1,0 +1,111 @@
+use test
+
+db.users.find()
+
+db.users.insertOne({carModel:'BMW', year:200})
+
+db.users.find({_id:ObjectId('66e8610553f9506ecef59b44')})
+
+// db.users.find(
+//     {gender:'female', rating:4},
+//     // {_id:1, name:1}
+//     {name:0}
+// )
+
+db.users.find({
+    $and:[
+        {rating:2},
+        {gender:'female'}
+    ]
+})
+
+db.users.find({
+    $or:[
+        {rating:2},
+        {gender:'female'}
+    ]
+})
+
+db.users.find({
+    age:{
+        $in:[12, 25,33,48,16,18]
+    }
+})
+db.users.find({
+    age:{
+        $nin:[12, 25,33,48,16,18]
+    }
+})
+
+db.users.find({
+    rating:{$gt:2}
+})
+db.users.find({
+    rating:{$gte:2}
+})
+
+db.users.find({
+    rating:{$lt:2}
+})
+db.users.find({
+    rating:{$lte:2}
+})
+
+db.users.find({
+    rating:{$ne:3}
+})
+
+db.users.find({
+    rating:{$eq:3}
+})
+
+db.users.find({rating:3})
+
+db.users.find({name:'Kira'})
+
+db.users.find({name:/^a/i})
+db.users.find({name:/a$/i})
+db.users.find({name:/.{2}t/i})
+db.users.find({name:/^k.*a$/i})
+db.users.find({name:/v/i})
+
+db.users.find().sort({rating:1})
+db.users.find().sort({rating:-1})
+db.users.find().sort({rating:-1, name:-1}).limit(2).skip(4)
+
+
+db.users.find()
+
+db.users.updateOne(
+    {_id:ObjectId('66e8610553f9506ecef59b3d')},
+    {$set:{rating2:8}}
+)
+
+db.users.updateOne(
+    {_id:ObjectId('66e8610553f9506ecef59b3d')},
+    {$unset:{rating:1}}
+)
+
+db.users.updateMany(
+    {gender:'male'},
+    {$set:{gender:'animal'}}
+)
+
+db.users.find({"address.house":{$gt:20}})
+
+db.users.find({parents:'Masha'})
+
+db.users.find({parents:{$size:1}})
+db.users.find({parents:{$exists:0}})
+
+db.users.find({_id:ObjectId('66e8610553f9506ecef59b44')})
+
+db.users.updateOne(
+    {_id:ObjectId('66e8610553f9506ecef59b44')},
+    {$push:{parents:'Kamila'}}
+)
+
+
+db.users.deleteOne(
+    {_id:ObjectId('66e8620953f9506ecef59b47')}
+)
