@@ -1,0 +1,130 @@
+db.students.find()
+db.teacher.find()
+
+db.teacher.aggregate([
+    {
+        $group:{
+            _id:'$lesson',
+            minPayment:{$min:'$payment'},
+            maxPayment:{$max:'$payment'},
+            avgPayment:{$avg:'$payment'},
+            sumPayment:{$sum:'$payment'},
+            countOfTeachers:{$sum:1}
+        }
+    },
+    {
+        $match:{
+            sumPayment:{$gt:3000}
+        }
+    },
+    {
+        $sort:{maxPayment:-1}
+    },
+    {
+        $project:{
+            myLesson:'$_id',
+            minPayment:1,
+            maxPayment:1,
+            avgPayment:1,
+            sumPayment:1,
+            countOfTeachers:1,
+            _id:0
+        }
+    },
+    {
+        $skip:2
+    },
+    {
+        $limit:2
+    },
+])
+
+
+db.teacher.aggregate([
+    {
+        $match:{
+            class_curator:{$gt:5}
+        }
+    },
+    {
+        $lookup:{
+            from:'students',
+            localField:'class_curator',
+            foreignField:'class',
+            as:'myStudents'
+        }
+    },
+])
+
+
+db.teacher.aggregate([
+    {
+        $lookup:{
+            from:'students',
+            localField:'class_curator',
+            foreignField:'class',
+            as:'myStudents'
+        }
+    },
+    {
+        $unwind:'$myStudents'
+    },
+    {
+        $unwind:'$myStudents.parents'
+    },
+    {
+        $match:{
+            'myStudents.parents.profession':'doctor'
+        }
+    },
+    {
+        $count:'doctorCount'
+    }
+])
+
+
+db.students.aggregate([
+    {
+        $addFields:{
+            nameLength:{$strLenCP:'$name'}
+        }
+    },
+    {
+        $match:{
+            nameLength:{$gt:6}
+        }
+    },
+    {
+        $project:{
+            nameLength:0
+        }
+    }
+])
+
+db.students.aggregate([
+    {
+        $addFields:{
+            countOfParents:{$cond:{if:{$isArray:'$parents'}, then:{$size:'$parents'}, else:0}}
+        }
+    },
+    {
+        $group:{
+            _id:'',
+            sum:{$sum:'$countOfParents'}
+        }
+    },
+    {
+        $project:{
+            _id:0
+        }
+    }
+])
+
+db.students.aggregate([
+    {
+        $project:{
+            name:0
+        }
+    }
+])
+
