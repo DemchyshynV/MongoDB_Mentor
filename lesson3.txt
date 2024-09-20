@@ -1,0 +1,91 @@
+db.students.find()
+
+
+db.students.updateOne(
+    {_id:ObjectId('66eb00b9fce4ca69f197ae98')},
+    {$inc:{class:-2}}
+)
+
+db.students.find({lessons:'english'})
+db.students.find({lessons:{$all:['english', 'geology']}})
+db.students.find({'lessons.1':'mathematics'})
+db.students.findOne({'lessons.1':'mathematics'}).name
+db.students.find({'lessons.1':'mathematics'}).count()
+db.students.find({}, {lessons:{$slice:2}})
+db.students.find({lessons:{$size:2}})
+
+db.students.updateOne(
+    {_id:ObjectId('66eb00b9fce4ca69f197ae98')},
+    {$push:{lessons:'css'}}
+)
+
+db.students.updateOne(
+    {_id:ObjectId('66eb00b9fce4ca69f197ae98')},
+    {$push:{lessons:['java', 'python']}}
+)
+
+db.students.find()
+db.students.updateOne(
+    {_id:ObjectId('66eb00b9fce4ca69f197ae98')},
+    {$push:{lessons:{$each:['java', 'python']}}}
+)
+
+
+db.students.updateOne(
+    {_id:ObjectId('66eb00b9fce4ca69f197ae98')},
+    {$pull:{'lessons.2':'java'}}
+)
+db.students.updateOne(
+    {_id:ObjectId('66eb00b9fce4ca69f197ae98')},
+    {$pull:{'lessons':["python"]}}
+)
+
+db.students.updateOne(
+    {_id:ObjectId('66eb00b9fce4ca69f197ae98')},
+    {$unset:{'lessons.0':1}}
+)
+
+db.students.updateOne(
+    {_id:ObjectId('66eb00b9fce4ca69f197ae98')},
+    {$pull:{'lessons':null}}
+)
+
+db.students.updateOne(
+    {_id:ObjectId('66eb00b9fce4ca69f197ae98')},
+    {$pop:{'lessons':1}}
+)
+
+db.students.updateOne(
+    {_id:ObjectId('66eb00b9fce4ca69f197ae98')},
+    {$pop:{'lessons':-1}}
+)
+
+db.students.updateOne(
+    {_id:ObjectId('66eb00b9fce4ca69f197ae98')},
+    {$push:{lessons:{$each:['java', 'python']}}}
+)
+db.students.find()
+
+
+db.students.updateOne(
+    {_id:ObjectId('66eb00b9fce4ca69f197ae98')},
+    {$addToSet:{lessons:'css'}}
+)
+
+db.students.updateOne(
+    {_id:ObjectId('66eb00b9fce4ca69f197ae98')},
+    {$addToSet:{lessons:{$each:['java', 'python', 'mongo', 'html']}}}
+)
+
+db.students.updateOne(
+    {_id:ObjectId('66eb00b9fce4ca69f197ae98')},
+    {$set:{lessons:[1,2,3,4]}}
+)
+
+db.students.updateMany(
+    {parents:{$exists:1}, "parents.profession":null},
+    {$set:{'parents.$[item].profession':'doctor'}},
+    {'arrayFilters':[{'item.profession':null}]}
+)
+
+db.students.find({parents:{$exists:1}, 'parents.profession':null})
